@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="scue" translate="label" sortOrder="10">
+            <label>Scue</label>
+        </tab>
+        <section id="esputnik" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>ESputnik</label>
+            <tab>scue</tab>
+            <resource>Scue_ESputnik::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General Configuration</label>
+                <attribute type="expanded">1</attribute>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Module Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="login" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Login</label>
+                    <validate>required-entry validate-length</validate>
+                </field>
+                <field id="password" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Password</label>
+                    <validate>required-entry validate-length</validate>
+                </field>
+                <field id="language" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Language</label>
+                    <validate>required-entry validate-length</validate>
+                </field>
+                <field id="clean_interval" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Clean Interval</label>
+                    <validate>required-entry validate-length</validate>
+                    <comment>Days to clean outdated records</comment>
+                </field>
+                <field id="debug_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="groups" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Groups</label>
+                <attribute type="expanded">1</attribute>
+                <field id="available" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <label>Available</label>
+                    <frontend_model>Scue\ESputnik\Block\Adminhtml\Form\Field\Group</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="broadcast" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Broadcast</label>
+                <attribute type="expanded">1</attribute>
+                <field id="default" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
+                    <label>Default channel</label>
+                    <source_model>Scue\ESputnik\Service\Broadcast\ChannelFactory</source_model>
+                </field>
+                <group id="email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="sender_address" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                        <label>Sender address</label>
+                    </field>
+                    <field id="sender_name" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Sender name</label>
+                    </field>
+                </group>
+                <group id="sms" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SMS</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="sender_name" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Sender name</label>
+                    </field>
+                    <field id="debug" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
+                        <label>Debug</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>If enabled write to esputnik.log file instead of API call</comment>
+                    </field>
+                    <group id="templates" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Templates</label>
+                        <field id="authorization" translate="label" type="textarea" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                            <label>Authorization</label>
+                            <comment>Available vars: code, customer</comment>
+                        </field>
+                        <field id="registration" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                            <label>Registration</label>
+                            <comment>Available vars: code, customer</comment>
+                        </field>
+                    </group>
+                </group>
+            </group>
+            <group id="events" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Events</label>
+                <attribute type="expanded">1</attribute>
+                <field id="order_status_changed" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
+                    <label>Order status changed</label>
+                    <frontend_model>Scue\ESputnik\Block\Adminhtml\Form\Field\Event\OrderStatusChanged</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

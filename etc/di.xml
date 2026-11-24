@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Scue\ESputnik\Api\ValidatorFactoryInterface" type="Scue\ESputnik\Validator\Factory" />
+    <preference for="Scue\ESputnik\Api\Subscription" type="ESputnikSubscriptionToGroupService" />
+    <preference for="Scue\ESputnik\Api\Repository\ContactRepository" type="Scue\ESputnik\Model\Repository\Contact\Remote" />
+    <preference for="Scue\ESputnik\Api\Http\ClientInterface" type="Scue\ESputnik\Http\Client" />
+    <preference for="Scue\ESputnik\Api\Template" type="Scue\ESputnik\Model\Broadcast\Template" />
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="scue_esputnik_broadcast" xsi:type="object">Scue\ESputnik\Console\Broadcast</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="esputnik_queue_listing_data_source" xsi:type="string">ESputnikQueueListingCollection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="scue_esputnik_order_plugin"
+                type="Scue\ESputnik\Plugin\Order"
+                sortOrder="100"
+                disabled="false"/>
+    </type>
+
+    <type name="Scue\ESputnik\Service\Subscription\Mapper\Contact">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="channels" xsi:type="string">Scue\ESputnik\Service\Subscription\Mapper\Channels</item>
+                <item name="groups" xsi:type="string">Scue\ESputnik\Service\Subscription\Mapper\Groups</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Scue\ESputnik\Service\EventManager\EventFactory">
+        <arguments>
+            <argument name="events" xsi:type="array">
+                <item name="orders" xsi:type="string">ESputnikOrdersEvent</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Broadcasts integration -->
+    <type name="Scue\ESputnik\Service\Broadcast\ChannelFactory">
+        <arguments>
+            <argument name="channels" xsi:type="array">
+                <item name="email" xsi:type="string">Scue\ESputnik\Service\Broadcast\Channel\Email</item>
+                <item name="sms" xsi:type="string">Scue\ESputnik\Service\Broadcast\Channel\Sms</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Scue\ESputnik\Service\Broadcast\Channel\Sms">
+        <arguments>
+            <argument name="logger" xsi:type="object">ESputnikLogger</argument>
+        </arguments>
+    </type>
+    <type name="Scue\ESputnik\Http\Client">
+        <arguments>
+            <argument name="logger" xsi:type="object">ESputnikLogger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="ESputnikLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/esputnik.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ESputnikLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">ESputnikLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Subscription validator groups -->
+    <virtualType name="ESputnikSubscriptionValidatorFactory" type="Scue\ESputnik\Validator\Factory">
+        <arguments>
+            <argument name="group" xsi:type="const">Scue\ESputnik\Validator\Factory::GROUP_SUBSCRIPTION</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ESputnikOrdersEventValidatorFactory" type="Scue\ESputnik\Validator\Factory">
+        <arguments>
+            <argument name="group" xsi:type="const">Scue\ESputnik\Validator\Factory::GROUP_ORDERS_EVENT</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Subscriptions -->
+    <virtualType name="ESputnikSubscriptionToGroupService" type="Scue\ESputnik\Service\Subscription">
+        <arguments>
+            <argument name="validatorFactory" xsi:type="object">ESputnikSubscriptionValidatorFactory</argument>
+            <argument name="mapper" xsi:type="object">ESputnikSubscriptionMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Mappers -->
+    <virtualType name="ESputnikSubscriptionMapper" type="Scue\ESputnik\Service\Subscription\Mapper">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="contact" xsi:type="string">Scue\ESputnik\Service\Subscription\Mapper\Contact</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Events -->
+    <virtualType name="ESputnikOrdersEvent" type="Scue\ESputnik\Service\Event">
+        <arguments>
+            <argument name="mapper" xsi:type="object">Scue\ESputnik\Service\Event\Mapper\Order</argument>
+            <argument name="validatorFactory" xsi:type="object">ESputnikOrdersEventValidatorFactory</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="ESputnikQueueListingCollection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">scue_esputnik_message</argument>
+            <argument name="resourceModel" xsi:type="string">Scue\ESputnik\Model\ResourceModel\Message</argument>
+        </arguments>
+    </virtualType>
+</config>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Validator/etc/validation.xsd">
+    <entity name="esputnik">
+        <rules>
+            <rule name="is_email_valid">
+                <entity_constraints>
+                    <constraint alias="email_valid" class="Scue\ESputnik\Service\Subscription\Validator\IsEmailValid" />
+                </entity_constraints>
+            </rule>
+            <rule name="is_subscription_id_valid">
+                <entity_constraints>
+                    <constraint alias="subscription_id_valid" class="Scue\ESputnik\Service\Subscription\Validator\IsSubscriptionIdValid" />
+                </entity_constraints>
+            </rule>
+            <rule name="is_not_subscribed">
+                <entity_constraints>
+                    <constraint alias="not_subscribed" class="Scue\ESputnik\Service\Subscription\Validator\UserNotSubscribed" />
+                </entity_constraints>
+            </rule>
+            <rule name="is_order_event_sent">
+                <entity_constraints>
+                    <constraint alias="is_order_event_sent" class="Scue\ESputnik\Service\EventManager\Validator\IsOrdersEventSent" />
+                </entity_constraints>
+            </rule>
+            <rule name="event_order_status_exist">
+                <entity_constraints>
+                    <constraint alias="event_order_status_exist" class="Scue\ESputnik\Service\EventManager\Validator\EventOrderStatusExist" />
+                </entity_constraints>
+            </rule>
+            <rule name="is_module_enabled">
+                <entity_constraints>
+                    <constraint alias="module_enabled" class="Scue\ESputnik\Validation\Validator\ModuleEnabled" />
+                </entity_constraints>
+            </rule>
+        </rules>
+        <groups>
+            <group name="subscription">
+                <uses>
+                    <use rule="is_email_valid"/>
+                    <use rule="is_subscription_id_valid"/>
+                    <use rule="is_not_subscribed"/>
+                </uses>
+            </group>
+            <group name="orders_event">
+                <uses>
+                    <use rule="is_order_event_sent"/>
+                    <use rule="event_order_status_exist"/>
+                    <use rule="is_module_enabled"/>
+                </uses>
+            </group>
+        </groups>
+    </entity>
+</validation>

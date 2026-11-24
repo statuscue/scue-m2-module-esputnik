@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="scue_esputnik_message"
+           resource="default"
+           engine="innodb"
+           comment="ESputnik messages queue">
+        <column xsi:type="int"
+                name="id"
+                unsigned="true"
+                nullable="false"
+                identity="true"
+                comment="ID"/>
+        <column xsi:type="datetime"
+                name="created_at"
+                nullable="false"
+                default="CURRENT_TIMESTAMP"
+                on_update="false"
+                comment="Created at"/>
+        <column xsi:type="datetime"
+                name="updated_at"
+                nullable="false"
+                default="CURRENT_TIMESTAMP"
+                on_update="true"
+                comment="Updated at"/>
+        <column xsi:type="varchar"
+                name="status"
+                nullable="false"
+                comment="Status"/>
+        <column xsi:type="varchar"
+                name="channel"
+                nullable="false"
+                comment="Channel"/>
+        <column xsi:type="json"
+                name="contact"
+                nullable="false"
+                comment="Contacts"/>
+        <column xsi:type="text"
+                name="message"
+                nullable="false"
+                comment="Message"/>
+        <column xsi:type="json"
+                name="params"
+                nullable="false"
+                comment="Params"/>
+        <column xsi:type="json"
+                name="response"
+                nullable="false"
+                comment="Response"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="SCUE_ESPUTNIK_MESSAGE_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="SCUE_ESPUTNIK_MESSAGE_STATUS_CHANNEL" indexType="btree">
+            <column name="status"/>
+            <column name="channel"/>
+        </index>
+    </table>
+    <table name="scue_esputnik_event"
+           resource="default"
+           engine="innodb"
+           comment="ESputnik event">
+        <column xsi:type="int"
+                name="id"
+                unsigned="true"
+                nullable="false"
+                identity="true"
+                comment="ID"/>
+        <column xsi:type="datetime"
+                name="created_at"
+                nullable="false"
+                default="CURRENT_TIMESTAMP"
+                on_update="false"
+                comment="Created at"/>
+        <column xsi:type="datetime"
+                name="updated_at"
+                nullable="false"
+                default="CURRENT_TIMESTAMP"
+                on_update="true"
+                comment="Updated at"/>
+        <column xsi:type="varchar"
+                name="status"
+                nullable="false"
+                comment="Status"/>
+        <column xsi:type="varchar"
+                name="entity_type"
+                nullable="false"
+                comment="Entity Type"/>
+        <column xsi:type="int"
+                name="entity_id"
+                nullable="true"
+                unsigned="true"
+                comment="Entity ID"/>
+        <column xsi:type="json"
+                name="params"
+                nullable="false"
+                comment="Params"/>
+        <column xsi:type="json"
+                name="response"
+                nullable="false"
+                comment="Response"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="SCUE_ESPUTNIK_EVENT_ENTITY_TYPE_ENTITY_ID" indexType="btree">
+            <column name="entity_type"/>
+            <column name="entity_id"/>
+        </index>
+    </table>
+</schema>

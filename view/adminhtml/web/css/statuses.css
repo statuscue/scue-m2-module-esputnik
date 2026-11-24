@@ -1,0 +1,45 @@
+.status {
+    display: block;
+    font-weight: bold;
+    padding: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 13px;
+    border: 1px solid;
+}
+
+.status.status_new {
+    background: transparent;
+    border-color: #303030;
+    color: #303030;
+}
+
+.status.status_postponed {
+    background: #fffcf8;
+    border-color: #e08a27;
+    color: #e08a27;
+}
+
+.status.status_processing {
+    background: #fdf0d5;
+    border-color: #6f4400;
+    color: #6f4400;
+}
+
+.status.status_error {
+    background: #fae5e5;
+    border-color: #e02b27;
+    color: #e02b27;
+}
+
+.status.status_success {
+    background: #e5efe5;
+    border-color: #006400;
+    color: #006400;
+}
+
+.status.status_pending {
+    background: #fffcf8;
+    border-color: #277de0;
+    color: #277DE0FF;
+}

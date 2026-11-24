@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <esputnik>
+            <general>
+                <enable>0</enable>
+                <language>UKR</language>
+                <clean_interval><![CDATA[30]]></clean_interval>
+            </general>
+            <broadcast>
+                <default>email</default>
+                <sms>
+                    <templates>
+                        <authorization><![CDATA[Код: {{var code}}]]></authorization>
+                        <registration><![CDATA[Код: {{var code}}]]></registration>
+                    </templates>
+                    <debug><![CDATA[1]]></debug>
+                    <sender_name><![CDATA[STATUSCUE]]></sender_name>
+                </sms>
+                <email>
+                    <sender_name><![CDATA[STATUSCUE]]></sender_name>
+                </email>
+            </broadcast>
+        </esputnik>
+    </default>
+</config>

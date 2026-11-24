@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="esputnik">
+        <job name="espustnik_message_sms" instance="Scue\ESputnik\Cron\Message" method="sms">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="espustnik_message_email" instance="Scue\ESputnik\Cron\Message" method="email">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="espustnik_events" instance="Scue\ESputnik\Cron\Event" method="events">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="espustnik_message_clean" instance="Scue\ESputnik\Cron\Message" method="clean">
+            <schedule>0 3 * * *</schedule>
+        </job>
+        <job name="espustnik_events_clean" instance="Scue\ESputnik\Cron\Event" method="clean">
+            <schedule>0 3 * * *</schedule>
+        </job>
+    </group>
+</config>
